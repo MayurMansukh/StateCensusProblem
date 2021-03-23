@@ -8,10 +8,11 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Iterator;
+import java.util.stream.StreamSupport;
 
 public class StateCensusAnalyser {
 
-    public int loadData(String path)throws CustomException{
+    public int loadData(String path) throws CustomException {
         if(path.contains(".csv"))
         {
             int numofEnteries=0;
@@ -22,22 +23,14 @@ public class StateCensusAnalyser {
                         .withIgnoreLeadingWhiteSpace(true)
                         .build();
 
-
                 Iterator<CSVStateCensusAnalyser> csvStateCensusAnalyserIterator=csvToBean.iterator();
-
-                while(csvStateCensusAnalyserIterator.hasNext()){
-                    CSVStateCensusAnalyser censusAnalyser=csvStateCensusAnalyserIterator.next();
-                    System.out.println("Name : " + censusAnalyser.getState());
-                    System.out.println("Email : " + censusAnalyser.getPopulation());
-                    System.out.println("PhoneNo : " + censusAnalyser.getAreaInSqKm());
-                    System.out.println("Country : " + censusAnalyser.getDensityPerSqKm());
-                    System.out.println("==========================");
-                    numofEnteries++;
-                }
+                Iterable<CSVStateCensusAnalyser> iterator=()  -> csvStateCensusAnalyserIterator;
+                return (int) StreamSupport.stream(iterator.spliterator(), false).count();
             }catch (IOException e){
                 throw new CustomException(e.getMessage(), CustomException.ExceptionType.Wrong_File);
+            }catch (RuntimeException e){
+                throw new CustomException(e.getMessage(), CustomException.ExceptionType.Wrong_File_Delimiter);
             }
-            return numofEnteries;
         }
         else{
             throw new CustomException("Wrong file type it should be .csv type", CustomException.ExceptionType.Wrong_File_Type);

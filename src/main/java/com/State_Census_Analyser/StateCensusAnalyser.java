@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 public class StateCensusAnalyser {
 
-    public int loadData(String path){
+    public int loadData(String path)throws CustomException{
         int i=0;
         try{
             Reader reader= Files.newBufferedReader(Paths.get(path));

@@ -12,7 +12,7 @@ import java.util.stream.StreamSupport;
 
 public class StateCensusAnalyser {
 
-    public int loadData(String path) throws CustomException {
+    public int loadStateCensusData(String path) throws CustomException {
         if(path.contains(".csv"))
         {
             int numofEnteries=0;
@@ -39,6 +39,7 @@ public class StateCensusAnalyser {
             throw new CustomException("Wrong file type it should be .csv type", CustomException.ExceptionType.Wrong_File_Type);
         }
     }
+
     public int loadStateCodeData(String path) throws CustomException {
         int numofEnteries=0;
         try {
@@ -53,9 +54,10 @@ public class StateCensusAnalyser {
                 CsvStateCodeAnalyser censusAnalyser=csvStateCensusAnalyserIterator.next();
                 numofEnteries++;
             }
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+        }catch (IOException e){
+            throw new CustomException(e.getMessage(), CustomException.ExceptionType.Wrong_File);
         }
         return numofEnteries;
     }
+
 }

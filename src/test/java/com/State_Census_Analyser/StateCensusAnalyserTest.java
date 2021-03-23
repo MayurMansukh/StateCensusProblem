@@ -87,6 +87,15 @@ public class StateCensusAnalyserTest {
             Assertions.assertEquals(e.type,CustomException.ExceptionType.Wrong_File_Type);
         }
     }
+    @Test
+    public void given_wrong_delimiter_should_throw_exception() throws CustomException{
+        try{
+            censusAnalyser.loadStateCodeData(State_Code_Correct_path);
+        }catch (CustomException e){
+            System.out.println(e.getMessage());
+            Assertions.assertEquals(e.type, CustomException.ExceptionType.Wrong_File_Delimiter);
+        }
+    }
 
 
 }

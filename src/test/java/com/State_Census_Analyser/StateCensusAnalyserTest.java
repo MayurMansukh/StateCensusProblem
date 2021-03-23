@@ -6,10 +6,11 @@ import org.junit.jupiter.api.Test;
 
 public class StateCensusAnalyserTest {
     private StateCensusAnalyser stateCensusAnalyser;;
+    private String State_Census_Correct_Path="/Users/manojmansukh/Downloads/IndiaStateCensusData.csv";
     private String Correct_Path="/Users/manojmansukh/Downloads/IndiaStateCensusData.csv";
     private String Wrong_Path="/Users/manojmansukh/Downloads/IndiaStateCensusData.csv";
-    private String Wrong_file_type="/Users/manojmansukh/Downloads/IndiaStateCensusData.csv";
-
+    private String Wrong_file_type="/Users/manojmansukh/Downloads/IndiaStateCensusData.txt";
+    private String State_Code_Correct_path="\"/Users/manojmansukh/Downloads/IndiaStateCensusData.csv";
 
     @BeforeAll
     public void setup() {
@@ -18,7 +19,7 @@ public class StateCensusAnalyserTest {
 
     @Test
     public void to_check_if_data_is_loaded() throws CustomException {
-        int numofEnteries = stateCensusAnalyser.loadData(Correct_Path);
+        int numofEnteries = stateCensusAnalyser.loadData(State_Census_Correct_Path);
         Assertions.assertEquals(29, numofEnteries);
     }
 
@@ -27,7 +28,7 @@ public class StateCensusAnalyserTest {
         try{
             stateCensusAnalyser.loadData(Wrong_Path);
         }catch (CustomException e){
-            System.out.println(e.type);
+            System.out.println(e.getMessage());
             Assertions.assertEquals(CustomException.ExceptionType.Wrong_File,e.type);
         }
     }
@@ -37,7 +38,7 @@ public class StateCensusAnalyserTest {
         try{
             stateCensusAnalyser.loadData(Wrong_file_type);
         }catch (CustomException e){
-            System.out.println(e.type);
+            System.out.println(e.getMessage());
             Assertions.assertEquals(e.type,CustomException.ExceptionType.Wrong_File_Type);
         }
     }
@@ -45,11 +46,20 @@ public class StateCensusAnalyserTest {
     @Test
     public void given_wrong_delimiter_should_throw_custom_exception(){
         try{
-            stateCensusAnalyser.loadData(Correct_Path);
+            stateCensusAnalyser.loadData(State_Census_Correct_Path);
         }catch (CustomException e){
-            System.out.println(e.type);
+            System.out.println(e.getMessage());
             Assertions.assertEquals(e.type, CustomException.ExceptionType.Wrong_File_Delimiter);
         }
     }
 
+    @Test
+    public void given_wrong_header_should_throw_custom_exception(){
+        try {
+            stateCensusAnalyser.loadData(State_Code_Correct_path);
+        }catch (CustomException e){
+            System.out.println(e.getMessage());
+            Assertions.assertEquals(e.type, CustomException.ExceptionType.Wrong_Header);
+        }
+    }
 }

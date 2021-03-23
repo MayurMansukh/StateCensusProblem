@@ -29,6 +29,9 @@ public class StateCensusAnalyser {
             }catch (IOException e){
                 throw new CustomException(e.getMessage(), CustomException.ExceptionType.Wrong_File);
             }catch (RuntimeException e){
+                if(e.getMessage().contains("CSV header")){
+                    throw new CustomException(e.getMessage(), CustomException.ExceptionType.Wrong_Header);
+                }
                 throw new CustomException(e.getMessage(), CustomException.ExceptionType.Wrong_File_Delimiter);
             }
         }

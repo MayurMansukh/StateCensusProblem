@@ -78,6 +78,15 @@ public class StateCensusAnalyserTest {
             Assertions.assertEquals(CustomException.ExceptionType.Wrong_File,e.type);
         }
     }
+    @Test
+    public void given_wrong_file_type_throw_custom_exception() throws CustomException{
+        try{
+            censusAnalyser.loadStateCodeData(Wrong_file_type);
+        }catch (CustomException e){
+            System.out.println(e.getMessage());
+            Assertions.assertEquals(e.type,CustomException.ExceptionType.Wrong_File_Type);
+        }
+    }
 
 
 }
